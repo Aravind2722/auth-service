@@ -12,6 +12,7 @@ import java.util.List;
 
 @JsonDeserialize
 public class CustomUserDetails implements UserDetails {
+    private Long userId;
     private String username;
     private String password;
     private List<CustomGrantedAuthority> authorities;
@@ -23,6 +24,7 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails() {
     }
     public CustomUserDetails(User user) {
+        this.userId = user.getId();
         this.username = user.getEmail();
         this.password = user.getHashedPassword();
         this.accountNonExpired = true;
@@ -35,6 +37,9 @@ public class CustomUserDetails implements UserDetails {
         for (Role role : user.getRoles()) {
             this.authorities.add(new CustomGrantedAuthority(role));
         }
+    }
+    public Long getUserId() {
+        return userId;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
